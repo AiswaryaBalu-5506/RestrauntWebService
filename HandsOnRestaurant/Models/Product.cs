@@ -15,6 +15,7 @@ namespace HandsOnRestaurant.Models
         [Required]
         public decimal Price { get; set; }
         public int ProductCategoryID { get; set; }
-        
+        public ProductCategory productCategory { get; set; }
+
     }
 }

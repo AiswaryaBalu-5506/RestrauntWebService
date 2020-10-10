@@ -10,7 +10,6 @@ namespace HandsOnRestaurant.Models
     {
         public int OrderItemID { get; set; }
         public int ProductID { get; set; }
-        [Required]
         public Product Product { get; set; }
         [Required]
         public int Quantity { get; set; }
