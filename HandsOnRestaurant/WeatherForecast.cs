@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using System;
 
 namespace HandsOnRestaurant
