@@ -8,9 +8,9 @@ namespace HandsOnRestaurant.Models
 {
     public class Order
     {
-        public int OrderID { get; set; }
-        [Required]
-        public string UserID { get; set; }
+        //[Required]
+        //public string ApplicationUserID { get; set; }
+        public int OrderID { get; set; }        
         [Required]
         public DateTime OrderDate { get; set; }
         public ICollection<OrderItem> OrderItems { get; set; }

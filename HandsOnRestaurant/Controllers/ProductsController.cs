@@ -6,9 +6,11 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using HandsOnRestaurant.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace HandsOnRestaurant.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class ProductsController : ControllerBase
@@ -22,14 +24,16 @@ namespace HandsOnRestaurant.Controllers
 
         // GET: api/Products
         [HttpGet]
+        [AllowAnonymous]
         public IActionResult GetProducts()
         {
-            var result = _context.Products.ToList();
+            var result = _context.Products.Include(a => a.productCategory).ToList();
             return Ok(result);
         }
 
         // GET: api/Products/5
         [HttpGet("{id}")]
+        [AllowAnonymous]
         public IActionResult GetProduct(int id)
         {
             var product = _context.Products.Find(id);
@@ -39,7 +43,7 @@ namespace HandsOnRestaurant.Controllers
                 return NotFound();
             }
 
-            return Ok(product);
+            return Ok(_context.Products.Include(a => a.productCategory));
         }
 
         // PUT: api/Products/5
