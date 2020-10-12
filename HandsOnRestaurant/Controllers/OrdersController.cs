@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using HandsOnRestaurant.Models;
 using Microsoft.AspNetCore.Authorization;
+using System.Security.Claims;
+using Microsoft.AspNetCore.Identity;
 
 namespace HandsOnRestaurant.Controllers
 {
@@ -45,26 +47,31 @@ namespace HandsOnRestaurant.Controllers
 
         // POST: api/Orders
         [HttpPost]
-        public IActionResult PostOrder(Order order)
+        public IActionResult PostOrder([FromBody] Order order)
         {
+            ClaimsIdentity identity = HttpContext.User.Identity as ClaimsIdentity;
+            var userID = identity.FindFirst("UserID").Value;
+            //var userId = User.Claims.FirstOrDefault(i => i.Type == "UserID").Value;
             decimal amount = 0;
             foreach (var orderItem in order.OrderItems)
             {
-                var price = _context.Products.Find(orderItem.ProductID).Price;
-                var quantity = orderItem.Quantity;
-                amount += price * quantity;
+               var price = _context.Products.Find(orderItem.ProductID).Price;
+               var quantity = orderItem.Quantity;
+               amount += price * quantity;
             }
             order.Amount = amount;
+            order.ApplicationUserID = userID;
             try
             {
                 _context.Orders.Add(order);
                 _context.SaveChanges();
                 return Ok();
-            }   
-             catch (Exception ex)
-             {
+            }
+            catch (Exception ex)
+            {
                 return NotFound(ex);
-             }
+            }         
+            
         }
     }
 }

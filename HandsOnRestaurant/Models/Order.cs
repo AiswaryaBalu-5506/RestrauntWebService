@@ -8,8 +8,7 @@ namespace HandsOnRestaurant.Models
 {
     public class Order
     {
-        //[Required]
-        //public string ApplicationUserID { get; set; }
+        public string ApplicationUserID { get; set; }
         public int OrderID { get; set; }        
         [Required]
         public DateTime OrderDate { get; set; }

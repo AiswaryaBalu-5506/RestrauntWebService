@@ -30,12 +30,13 @@ namespace HandsOnRestaurant.Controllers
         [HttpPost]
         [Route("login")]
         public async Task<IActionResult> Login([FromBody] LoginModel model)
-        {
-            var user = await userManager.FindByNameAsync(model.Username);
+        {            
+            var user = await userManager.FindByNameAsync(model.Username);            
             if (user != null && await userManager.CheckPasswordAsync(user, model.Password))
             {
                 var authClaims = new List<Claim>
                 {
+                    new Claim("UserID", user.Id.ToString()),
                     new Claim(ClaimTypes.Name, user.UserName),
                     new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
                 };
